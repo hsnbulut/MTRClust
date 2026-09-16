@@ -129,7 +129,9 @@ methodological article:
 > Multilevel Outlier Diagnostics*. Manuscript.
 
 Complete journal, volume, page, and article DOI information will be added after
-publication. The current package citation can also be inspected in R:
+publication. No separate software DOI is planned for this package; package users
+are directed to cite the methodological article. The current package citation can
+also be inspected in R:
 
 ```r
 citation("MTRClust")

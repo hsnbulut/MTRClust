@@ -9,10 +9,10 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 # MTRClust
 
-MTRClust is an R package for robust clustering of multivariate panel
-trajectories. The method fits smooth low-rank cluster trajectories, trims whole
-observations, and records multilevel outlier diagnostics for complete numeric
-panel arrays.
+`MTRClust` is an R package for robust clustering of multivariate panel
+trajectories. The method estimates smooth low-rank cluster trajectories, trims
+whole observations, and provides multilevel outlier diagnostics for complete
+numeric panel arrays.
 
 The main input is a numeric three-dimensional array with dimensions
 `n x T x p`, where `n` is the number of units, `T` is the number of ordered time
@@ -20,38 +20,52 @@ points, and `p` is the number of variables or sensors.
 
 ## Features
 
-- Robust clustering of complete multivariate panel arrays.
-- Observation-level trimming through `alpha`.
-- Smooth low-rank fitted cluster trajectories.
-- Explicit termination, convergence, and rollback diagnostics.
-- Observation, temporal, sensor-segment, multivariate-segment, and cell-level
+* Robust clustering of complete multivariate panel arrays.
+* Observation-level trimming controlled by `alpha`.
+* Smooth low-rank fitted cluster trajectories.
+* Explicit termination, convergence, and rollback diagnostics.
+* Observation, temporal, sensor-segment, multivariate-segment, and cell-level
   diagnostic summaries.
-- S3 `print()`, `summary()`, and `plot()` methods.
-- Small synthetic data generator and long-format-to-array helper.
+* S3 `print()`, `summary()`, and `plot()` methods.
+* A small synthetic panel-data generator.
+* A helper for converting complete long-format panels to `n x T x p` arrays.
 
 ## Installation
 
-From a local source package:
+Install the current public release from GitHub:
 
 ```r
-install.packages("MTRClust_0.1.0.tar.gz", repos = NULL, type = "source")
-```
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
 
-From GitHub after the public repository has been created:
-
-```r
-install.packages("remotes")
 remotes::install_github("hsnbulut/MTRClust")
 ```
 
-Repository target: <https://github.com/hsnbulut/MTRClust>
+Alternatively, install a downloaded source package:
+
+```r
+install.packages(
+  "MTRClust_0.1.0.tar.gz",
+  repos = NULL,
+  type = "source"
+)
+```
+
+Repository: https://github.com/hsnbulut/MTRClust
 
 ## Minimum example
 
 ```{r example}
 library(MTRClust)
 
-dat <- simulate_mtr_panel(n = 30, tt = 15, p = 3, seed = 1)
+dat <- simulate_mtr_panel(
+  n = 30,
+  tt = 15,
+  p = 3,
+  seed = 1
+)
+
 fit <- mtrclust(
   x = dat$x,
   k = 3,
@@ -62,63 +76,93 @@ fit <- mtrclust(
   seed = 1
 )
 
-fit
+print(fit)
 summary(fit)
 plot(fit, type = "objective")
 ```
 
-This example was run during package-release preparation. It converged without
-rollback using `max_iter = 20` on the synthetic data generated above.
+This example was validated during package-release preparation. It converged
+without rollback using `max_iter = 20` on the synthetic data generated above.
 
 ## Diagnostics
+
+Summary counts and unit-level diagnostics can be obtained with:
 
 ```{r diagnostics}
 mtrclust_diagnostics(fit)
 head(mtrclust_diagnostics(fit, type = "units"))
 ```
 
-Use the help pages and introductory vignette for the full argument list and
-interpretation details:
+The fitted object records the termination reason, convergence status, rollback
+status, iteration count, best iteration, objective value, cluster assignments,
+retained observations, fitted trajectories, and multilevel outlier diagnostics.
+
+## Documentation
+
+Use the package help pages and introductory vignette for the complete argument
+list and interpretation guidance:
 
 ```r
 ?mtrclust
 vignette("introduction-to-mtrclust", package = "MTRClust")
 ```
 
+The package also provides `as_mtr_panel()` for converting a complete long-format
+data set into the array structure required by `mtrclust()`.
+
 ## Reproducibility
 
-`mtrclust()` uses sequential random starts by default. Set `seed` explicitly to
-make the stochastic initialization reproducible. The returned object records the
-main user arguments, termination reason, convergence flag, rollback flag,
-iteration count, best iteration, objective value, and diagnostic summaries.
+`mtrclust()` uses sequential random starts by default. Set the `seed` argument
+explicitly to make stochastic initialization reproducible.
 
-## Limitations
+The public API uses `method = "global"` by default. The legacy value
+`"v6_global"` remains accepted as an alias and maps to the same validated
+internal implementation.
 
-The current wrapper requires complete finite numeric arrays. Missing values are
-not imputed. The default execution path is sequential. Termination by
-`max_iter` is reported separately from convergence, and rollback to the best
-objective iterate is explicitly recorded.
+## Current limitations
+
+The current implementation requires complete finite numeric arrays. Missing
+values are not imputed. The default execution path is sequential.
+
+Termination caused by reaching `max_iter` is reported separately from numerical
+convergence. When rollback is enabled, a nonconverged candidate can be restored
+to its best recorded objective iterate, and this action is explicitly reported
+in the fitted object.
 
 ## Citation
 
-If you use MTRClust in research, please cite the accompanying MTRClust methods
-article. The article DOI is not available yet and should not be invented. The
-package citation can be inspected with:
+If you use `MTRClust` in academic research, please cite the associated
+methodological article:
+
+> Bulut, H. *MTRClust: Robust Clustering of Multivariate Panel Profiles with
+> Multilevel Outlier Diagnostics*. Manuscript.
+
+Complete journal, volume, page, and article DOI information will be added after
+publication. No separate software DOI is planned for this package; package users
+are directed to cite the methodological article. The current package citation can
+also be inspected in R:
 
 ```r
 citation("MTRClust")
 ```
 
-No separate software DOI is planned for this package.
-
 ## Development status
 
-Version `0.1.0` is the initial public source release prepared for GitHub
-publication. The scientific implementation follows the audited prototype used
-in the accompanying methods manuscript. The public API uses `method = "global"`
-by default; the legacy internal alias `"v6_global"` remains accepted for
-reproducibility.
+Version `0.1.0` is the initial public release of `MTRClust`. The scientific
+implementation follows the audited prototype used in the accompanying methods
+manuscript.
+
+Manuscript-scale simulations and real-data analyses are not executed by package
+examples or vignettes. Additional computational artefacts supporting the
+manuscript can be made available upon reasonable request.
+
+## Issues
+
+Bug reports and reproducible feature requests can be submitted at:
+
+https://github.com/hsnbulut/MTRClust/issues
 
 ## License
 
-GPL (>= 3). See `LICENSE` for package-level licensing notes.
+`MTRClust` is distributed under the GNU General Public License version 3 or
+later (`GPL-3.0-or-later`). See `LICENSE` for details.

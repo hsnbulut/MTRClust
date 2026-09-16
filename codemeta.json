@@ -25,5 +25,5 @@
   ],
   "codeRepository": "https://github.com/hsnbulut/MTRClust",
   "issueTracker": "https://github.com/hsnbulut/MTRClust/issues",
-  "releaseNotes": "Initial public source release prepared for GitHub publication. No separate software DOI is planned; users should cite the accompanying methods article."
+  "releaseNotes": "Initial public source release on GitHub. No separate software DOI is planned; users should cite the accompanying methods article."
 }

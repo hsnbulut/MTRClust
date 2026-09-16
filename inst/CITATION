@@ -4,7 +4,7 @@ c(
     title = "MTRClust: Robust Clustering of Multivariate Panel Profiles with Multilevel Outlier Diagnostics",
     author = personList(person("Hasan", "Bulut")),
     year = "2026",
-    note = "Methods manuscript. Please cite the published article once available; no article DOI is available at package release preparation."
+    note = "Methods manuscript. Please cite the published article once available; no article DOI is available at the time of package release."
   ),
   bibentry(
     bibtype = "Manual",
