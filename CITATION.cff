@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use MTRClust, please cite the accompanying MTRClust methods article. No separate software DOI is planned for this package."
+title: "MTRClust: Robust Clustering of Multivariate Panel Trajectories"
+version: "0.1.0"
+date-released: "2026-09-15"
+type: software
+license: GPL-3.0-or-later
+authors:
+  - family-names: Bulut
+    given-names: Hasan
+    email: hasan.bulut@omu.edu.tr
+    affiliation: "Department of Statistics, Faculty of Science, Ondokuz Mayis University"
+abstract: "R package implementing trimmed robust clustering for complete numeric multivariate panel arrays with multilevel outlier diagnostics."
+repository-code: "https://github.com/hsnbulut/MTRClust"

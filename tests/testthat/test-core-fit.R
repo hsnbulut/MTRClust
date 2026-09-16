@@ -1,0 +1,58 @@
+test_that("mtrclust returns expected class and components", {
+  dat <- simulate_mtr_panel(n = 24, tt = 12, p = 3, seed = 202)
+  fit <- mtrclust(dat$x, k = 3, alpha = 0.05, nstart = 2, max_iter = 4, seed = 202)
+  expect_is(fit, "mtrclust")
+  expect_equal(length(fit$cluster), 24)
+  expect_equal(dim(fit$centers)[1], 3)
+  expect_true(is.numeric(fit$objective))
+  expect_true(fit$termination %in% c("converged", "cycle_detected", "max_iter"))
+  expect_true(is.logical(fit$converged))
+  expect_true(is.logical(fit$rolled_back))
+  expect_true(is.integer(fit$iterations) || is.numeric(fit$iterations))
+  expect_true(is.integer(fit$best_iteration) || is.numeric(fit$best_iteration))
+  expect_equal(fit$arguments$method, "global")
+  expect_equal(fit$arguments$method_internal, "v6_global")
+  expect_equal(sum(fit$keep) + length(fit$observation_outliers), 24)
+})
+
+test_that("seeded fits are deterministic in sequential mode", {
+  dat <- simulate_mtr_panel(n = 24, tt = 12, p = 3, seed = 303)
+  fit1 <- mtrclust(dat$x, k = 3, alpha = 0.05, nstart = 2, max_iter = 4, seed = 303)
+  fit2 <- mtrclust(dat$x, k = 3, alpha = 0.05, nstart = 2, max_iter = 4, seed = 303)
+  expect_equal(fit1$objective, fit2$objective, tolerance = 1e-10)
+  expect_equal(canonical_partition(fit1$cluster), canonical_partition(fit2$cluster))
+  expect_equal(fit1$keep, fit2$keep)
+  expect_equal(fit1$observation_outliers, fit2$observation_outliers)
+})
+
+test_that("print summary diagnostics and plot methods work", {
+  dat <- simulate_mtr_panel(n = 24, tt = 12, p = 3, seed = 404)
+  fit <- mtrclust(dat$x, k = 3, alpha = 0.05, nstart = 2, max_iter = 4, seed = 404)
+  expect_output(print(fit), "MTRClust fit")
+  sm <- summary(fit)
+  expect_is(sm, "summary.mtrclust")
+  expect_output(print(sm), "MTRClust summary")
+  d <- mtrclust_diagnostics(fit)
+  expect_true(all(c("level", "count") %in% names(d)))
+  tmp <- tempfile(fileext = ".pdf")
+  grDevices::pdf(tmp)
+  on.exit(grDevices::dev.off(), add = TRUE)
+  expect_error(plot(fit, type = "objective"), NA)
+  expect_error(plot(fit, type = "sizes"), NA)
+  expect_error(plot(fit, type = "diagnostics"), NA)
+})
+
+test_that("canonical partition comparison is invariant to label permutation", {
+  z <- c(2, 2, 1, 1, 3, 3, 2, 1)
+  permuted <- c(3, 3, 2, 2, 1, 1, 3, 2)
+  expect_equal(canonical_partition(z), canonical_partition(permuted))
+})
+
+test_that("documentation example executes with the installed API", {
+  dat <- simulate_mtr_panel(n = 30, tt = 15, p = 3, seed = 1)
+  fit <- mtrclust(dat$x, k = 3, alpha = 0.05, rank = 2,
+                  nstart = 2, max_iter = 20, seed = 1)
+  expect_is(fit, "mtrclust")
+  expect_output(print(fit), "MTRClust fit")
+  expect_is(summary(fit), "summary.mtrclust")
+})

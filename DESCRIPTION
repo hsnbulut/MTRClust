@@ -1,0 +1,29 @@
+Package: MTRClust
+Type: Package
+Title: Robust Clustering of Multivariate Panel Trajectories
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Hasan", family = "Bulut",
+           role = c("aut", "cre", "cph"),
+           email = "hasan.bulut@omu.edu.tr",
+           comment = c(ORCID = "0000-0002-6924-9651"))
+  )
+Description: Provides a robust alternating algorithm for clustering numeric
+    multivariate panel trajectories stored as n by T by p arrays. The main
+    function estimates smooth low-rank cluster trajectories, trims whole
+    observations, records termination and rollback diagnostics, and returns
+    multilevel outlier summaries for observation, temporal, sensor-segment, and
+    cell-level structure.
+License: GPL (>= 3)
+URL: https://github.com/hsnbulut/MTRClust
+BugReports: https://github.com/hsnbulut/MTRClust/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
+Depends:
+    R (>= 4.0.0)
+Imports:
+    stats,
+    utils
+Suggests:
+    testthat (>= 1.0.2)

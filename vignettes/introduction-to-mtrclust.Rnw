@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+%\VignetteIndexEntry{Introduction to MTRClust}
+%\VignetteEngine{utils::Sweave}
+%\VignetteEncoding{UTF-8}
+
+\title{Introduction to MTRClust}
+\author{Hasan Bulut}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Multivariate Panel Data}
+
+MTRClust expects a numeric array with dimensions \(n \times T \times p\):
+units, ordered time points, and variables. The fitting routine requires complete
+finite numeric data; missing values are not imputed.
+
+\section{Small Reproducible Example}
+
+<<setup, echo=TRUE, results=hide>>=
+library(MTRClust)
+dat <- simulate_mtr_panel(n = 30, tt = 15, p = 3, seed = 11)
+dim(dat$x)
+@
+
+The main user function is \texttt{mtrclust()}. The example below keeps the
+iteration budget deliberately small so that package checks remain fast.
+
+<<fit, echo=TRUE>>=
+fit <- mtrclust(dat$x, k = 3, alpha = 0.05, rank = 2,
+                nstart = 2, max_iter = 20, seed = 11)
+fit
+@
+
+\section{Interpreting Results}
+
+The returned object has class \texttt{mtrclust}. It records cluster assignments,
+retained and trimmed units, fitted trajectories, objective values, termination
+status, rollback status, and multilevel outlier diagnostics.
+
+<<summary, echo=TRUE>>=
+summary(fit)
+mtrclust_diagnostics(fit)
+head(mtrclust_diagnostics(fit, type = "units"))
+@
+
+\section{Termination and Reproducibility}
+
+\texttt{fit\$termination} records why the algorithm stopped, whereas
+\texttt{fit\$converged} records whether the numerical convergence criterion was
+met. Termination by \texttt{max\_iter} is not convergence. If rollback is used,
+\texttt{fit\$rolled\_back} records that the reported solution was restored to
+the best objective iterate. Use the \texttt{seed} argument for deterministic
+sequential runs.
+
+\section{Visualization}
+
+<<plots, echo=TRUE, fig=TRUE, height=4, width=6>>=
+plot(fit, type = "objective")
+plot(fit, type = "sizes")
+@
+
+\section{Current Limitations}
+
+The package currently exports the audited sequential prototype implementation.
+It does not run manuscript-scale simulations or real-data analyses in examples
+or vignettes, and it does not export a parallel API until parallel RNG
+reproducibility is separately validated.
+
+\end{document}

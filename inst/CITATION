@@ -1,0 +1,16 @@
+c(
+  bibentry(
+    bibtype = "Unpublished",
+    title = "MTRClust: Robust Clustering of Multivariate Panel Profiles with Multilevel Outlier Diagnostics",
+    author = personList(person("Hasan", "Bulut")),
+    year = "2026",
+    note = "Methods manuscript. Please cite the published article once available; no article DOI is available at package release preparation."
+  ),
+  bibentry(
+    bibtype = "Manual",
+    title = "MTRClust: Robust Clustering of Multivariate Panel Trajectories",
+    author = personList(person("Hasan", "Bulut")),
+    year = "2026",
+    note = "R package version 0.1.0. Source code: https://github.com/hsnbulut/MTRClust. No separate software DOI is planned."
+  )
+)

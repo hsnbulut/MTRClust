@@ -1,0 +1,93 @@
+---
+title: "Introduction to MTRClust"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to MTRClust}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Multivariate panel data
+
+MTRClust expects a numeric `n x T x p` array. The first dimension indexes
+units, the second indexes ordered time points, and the third indexes variables.
+
+## Robust clustering problem
+
+The method estimates smooth low-rank cluster trajectories while trimming a
+prespecified fraction of units and recording multilevel outlier diagnostics.
+
+## MTRClust overview
+
+The algorithm robustly scales variables, initializes candidate partitions,
+alternates assignment and smooth low-rank center updates, and returns the best
+valid candidate according to the objective.
+
+## Input preparation
+
+```{r}
+library(MTRClust)
+dat <- simulate_mtr_panel(n = 30, tt = 15, p = 3, seed = 11)
+dim(dat$x)
+```
+
+## Fitting
+
+```{r}
+fit <- mtrclust(dat$x, k = 3, alpha = 0.05, rank = 2,
+                nstart = 2, max_iter = 20, seed = 11)
+fit
+```
+
+## Interpreting clusters and trimming
+
+```{r}
+summary(fit)
+head(mtrclust_diagnostics(fit, type = "units"))
+```
+
+## Interpreting termination and rollback
+
+`fit$termination` records why the iteration stopped. `fit$converged` records
+whether the numerical convergence conditions were met. `fit$rolled_back`
+records whether a nonconverged candidate was restored to its best objective
+iterate.
+
+## Multilevel outlier diagnostics
+
+```{r}
+mtrclust_diagnostics(fit)
+```
+
+Observation outliers, global sensor-time faults, temporal points, multivariate
+segments, sensor segments, isolated cells, and raw candidate detections are
+reported separately. They should not be summed as independent events.
+
+## Visualization
+
+```{r}
+plot(fit, type = "objective")
+plot(fit, type = "sizes")
+```
+
+## Reproducibility
+
+Use the `seed` argument for deterministic sequential runs. Parallel execution is
+not exported in this checkpoint because reproducible parallel RNG behavior has
+not yet been validated.
+
+## Current limitations
+
+The package currently requires complete finite numeric arrays, does not impute
+missing data, and uses the audited sequential prototype algorithm without
+performance-oriented rewrites.
+
+## Future real-data vignette
+
+A separate real-data vignette can be prepared after a public data-access and
+runtime policy is finalized. This checkpoint does not run the manuscript-scale
+real-data analyses.

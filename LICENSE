@@ -1,0 +1,11 @@
+MTRClust is distributed under GPL (>= 3).
+
+Copyright (C) 2026 Hasan Bulut
+
+The package source wraps the audited MTRClust prototype implementation used in
+the accompanying manuscript project. No external non-base source code has been
+identified in the package implementation beyond the project-owned MTRClust
+algorithm code and ordinary R package dependencies.
+
+The complete text of the GNU General Public License version 3 is available from
+the Free Software Foundation at https://www.gnu.org/licenses/gpl-3.0.html.

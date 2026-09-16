@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.tar.gz
+*.Rcheck
+check_logs/
+check_logs_*/
+docs/
+Meta/
+doc/
+backups/
+*.log
+*.aux
+*.out
+*.toc
