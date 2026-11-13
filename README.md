@@ -110,6 +110,18 @@ The public API uses `method = "global"` by default. The legacy value
 `"v6_global"` remains accepted as an alias and maps to the same validated
 internal implementation.
 
+## Research data and reproducibility
+
+The research materials supporting the manuscript *MTRClust: Robust clustering of multivariate panel data with multilevel outlier diagnostics* (PONE-D-26-49779) are publicly available in the [research-v1.0.0 GitHub Release](https://github.com/hsnbulut/MTRClust/releases/tag/research-v1.0.0).
+
+The research archive includes results from the 64-scenario simulation benchmark (44,800 method-result records), 9,600 ablation-fit records, 12 overlap-validation cases, and compact results from three full-data reference fits and 600 subsample fits. Analysis scripts, configurations, numerical verification tools, checksums, and reproducibility instructions are also provided.
+
+Download the [research ZIP](https://github.com/hsnbulut/MTRClust/releases/download/research-v1.0.0/MTRClust_PONE-D-26-49779_research_v1.0.0.zip) and its [SHA256 checksum](https://github.com/hsnbulut/MTRClust/releases/download/research-v1.0.0/MTRClust_PONE-D-26-49779_research_v1.0.0.zip.sha256). Follow the README.md and REPRODUCING.md files inside the archive to verify the saved results.
+
+The archive reconstructs stored numerical results without rerunning all historical model fits. Limitations concerning unavailable original states and some comparator assignments are documented in MISSING_DATA.md.
+
+This research release (research-v1.0.0) is separate from the installable MTRClust R package (v0.1.0).
+
 ## Current limitations
 
 The current implementation requires complete finite numeric arrays. Missing
@@ -125,8 +137,9 @@ in the fitted object.
 If you use `MTRClust` in academic research, please cite the associated
 methodological article:
 
-> Bulut, H. *MTRClust: Robust Clustering of Multivariate Panel Profiles with
-> Multilevel Outlier Diagnostics*. Manuscript.
+> Bulut, H., & Osman, B. M. *MTRClust: Robust clustering of multivariate
+> panel data with multilevel outlier diagnostics*. Manuscript under revision,
+> PLOS ONE (PONE-D-26-49779).
 
 Complete journal, volume, page, and article DOI information will be added after
 publication. No separate software DOI is planned for this package; package users
@@ -144,8 +157,8 @@ implementation follows the audited prototype used in the accompanying methods
 manuscript.
 
 Manuscript-scale simulations and real-data analyses are not executed by package
-examples or vignettes. Additional computational artefacts supporting the
-manuscript can be made available upon reasonable request.
+examples or vignettes. Their saved results and verification scripts are publicly
+available in the separate research-v1.0.0 release linked above.
 
 ## Issues
 
